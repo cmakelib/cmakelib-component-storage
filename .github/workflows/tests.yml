@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         image: ["latest-debian-buster", "latest-ubuntu-1804", "latest-ubuntu-2004"]
+        cmdopt: [ "-P ./CMakeLists.txt", "." ]
     runs-on: ubuntu-latest
     container:
         image: cmakelib/build-linux:${{ matrix.image }}
@@ -25,15 +26,30 @@ jobs:
             echo "CMLIB_DIR=$(pwd)/cmakelib" >> $GITHUB_ENV
       - name: Run tests
         run: |
-            cd test/ && cmake -DCMLIB_DEBUG=ON .
+            cd test/ && cmake ${{ matrix.cmdopt }}
 
-  test_linux_script:
+  test_windows:
     strategy:
       matrix:
-        image: ["latest-debian-buster", "latest-ubuntu-1804", "latest-ubuntu-2004"]
-    runs-on: ubuntu-latest
-    container:
-        image: cmakelib/build-linux:${{ matrix.image }}
+        cmdopt: [ "-P ./CMakeLists.txt", "." ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Init CMakelib
+        run: |
+            git clone "https://github.com/cmakelib/cmakelib.git"
+      - name: Run tests
+        run: |
+            $Env:CMLIB_DIR=$(Join-Path -Path $(Get-Location).Path -ChildPath "cmakelib")
+            $Env:CMLIB_DIR
+            cd test/
+            cmake ${{ matrix.cmdopt }}
+
+  test_macos:
+    strategy:
+      matrix:
+        cmdopt: [ "-P ./CMakeLists.txt", "." ]
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Init CMakelib
@@ -42,4 +58,4 @@ jobs:
             echo "CMLIB_DIR=$(pwd)/cmakelib" >> $GITHUB_ENV
       - name: Run tests
         run: |
-            cd test/ && cmake -DCMLIB_DEBUG=ON -P ./CMakeLists.txt
+            cd test/ && cmake ${{ matrix.cmdopt }}

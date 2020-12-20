@@ -9,10 +9,10 @@ FIND_PACKAGE(CMLIB)
 
 INCLUDE("${CMAKE_CURRENT_LIST_DIR}/TEST.cmake")
 
-TEST_RUN("${CMAKE_CURRENT_LIST_DIR}/variable_template/")
-TEST_RUN("${CMAKE_CURRENT_LIST_DIR}/storage_config/")
+TEST_RUN("variable_template")
+TEST_RUN("storage_config")
 
-TEST_INVALID_CMAKE_RUN("${CMAKE_CURRENT_LIST_DIR}/var_missing_list"
+TEST_INVALID_CMAKE_RUN("var_missing_list"
 	"STORAGE_LIST variable missing in")
-TEST_INVALID_CMAKE_RUN("${CMAKE_CURRENT_LIST_DIR}/var_missing_uri"
+TEST_INVALID_CMAKE_RUN("var_missing_uri"
 	"Storage list entry 'STORAGE_LIST_TESTLIB' for 'TESTLIB' is not defined")
