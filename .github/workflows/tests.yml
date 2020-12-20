@@ -1,0 +1,45 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  test_linux:
+    strategy:
+      matrix:
+        image: ["latest-debian-buster", "latest-ubuntu-1804", "latest-ubuntu-2004"]
+    runs-on: ubuntu-latest
+    container:
+        image: cmakelib/build-linux:${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Init CMakelib
+        run: |
+            git clone "https://github.com/cmakelib/cmakelib.git"
+            echo "CMLIB_DIR=$(pwd)/cmakelib" >> $GITHUB_ENV
+      - name: Run tests
+        run: |
+            cd test/ && cmake -DCMLIB_DEBUG=ON .
+
+  test_linux_script:
+    strategy:
+      matrix:
+        image: ["latest-debian-buster", "latest-ubuntu-1804", "latest-ubuntu-2004"]
+    runs-on: ubuntu-latest
+    container:
+        image: cmakelib/build-linux:${{ matrix.image }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Init CMakelib
+        run: |
+            git clone "https://github.com/cmakelib/cmakelib.git"
+            echo "CMLIB_DIR=$(pwd)/cmakelib" >> $GITHUB_ENV
+      - name: Run tests
+        run: |
+            cd test/ && cmake -DCMLIB_DEBUG=ON -P ./CMakeLists.txt
