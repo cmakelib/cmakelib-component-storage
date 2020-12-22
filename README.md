@@ -1,6 +1,8 @@
 
 # CMake-lib storage component
 
+Linux: ![buildbadge_github], Windows: ![buildbadge_github], Mac OS: ![buildbadge_github]
+
 * [Usage](#usage)
 * [General](#general)
   + [Remote GIT repository structure](#remote-git-repository-structure)
@@ -102,3 +104,5 @@ If you have a question please use [Github Discussion]
 [Github Issue]:      https://github.com/cmakelib/cmakelib-component-storage/issues
 [example/CMLibStorage.cmake]: example/CMLibStorage.cmake
 [example/]: example/
+[buildbadge_github]: https://github.com/cmakelib/cmakelib-component-storage/workflows/Tests/badge.svg
+
