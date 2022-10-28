@@ -3,12 +3,13 @@
 
 Linux: ![buildbadge_github], Windows: ![buildbadge_github], Mac OS: ![buildbadge_github]
 
-* [Usage](#usage)
-* [General](#general)
-  + [Remote GIT repository structure](#remote-git-repository-structure)
-  + [CMLibStorage.cmake structure](#cmlibstoragecmake-structure)
-  + [Variable templates](#variable-templates)
-* [Bug reports, feature requests](#bug-reports-and-feature-requests)
+- [CMake-lib storage component](#cmake-lib-storage-component)
+  - [Usage](#usage)
+  - [General](#general)
+    - [Remote GIT repository structure](#remote-git-repository-structure)
+    - [CMLibStorage.cmake structure](#cmlibstoragecmake-structure)
+    - [Variable templates](#variable-templates)
+  - [Bug reports and feature requests](#bug-reports-and-feature-requests)
 
 It is a mechanism for storing and retreiving build dependencies like CMake modules, build scrips,
 build resources etc.
@@ -68,6 +69,7 @@ CMLibStorage.cmake required variables
 
 - `STORAGE_LIST` - nonempty, finite set of shared storage names,
 - `STORAGE_LIST_<name>` - URI which represents shared storage 'name' - name must be from `STORAGE_LIST`
+- `STORAGE_LIST_<name>_REVISION` - which represents shared storage 'name' - name must be from `STORAGE_LIST`
 
 Look at example at [example/CMLibStorage.cmake]
 
@@ -82,14 +84,14 @@ We define variable in form `SET(BOOST_URI_TEMPLATE "https://mystorage.com/boost_
 
 Once we want to obtain URL for Boost 1.74.0 for 64-bit windows by template variable BOOST_URI_TEMPLATE we just call
 
-```
+```cmake
 SET(BOOST_URI_TEMPLATE "https://mystorage.com/boost_<version>_<OS>_<PlAtFoRm>.zip")
 CMLIB_STORAGE_TEMPLATE_INSTANCE(
-	boost_uri
-	BOOST_URI_TEMPLATE
-	version  107400
-	os       windows
-	platform amd64
+  boost_uri
+  BOOST_URI_TEMPLATE
+  version  107400
+  os       windows
+  platform amd64
 )
 MESSAGE(STATUS "Boost URI: ${boost_uri}")
 ```
@@ -102,8 +104,6 @@ If you want to submit a Bug report/feature request create a [Github Issue].
 
 If you have a question please use [Github Discussion]
 
-
-
 [CMLIB]:             https://github.com/cmakelib
 [CMake-lib]:         https://github.com/cmakelib
 [Github Discussion]: https://github.com/cmakelib/cmakelib-component-storage/discussions
@@ -111,4 +111,3 @@ If you have a question please use [Github Discussion]
 [example/CMLibStorage.cmake]: example/CMLibStorage.cmake
 [example/]: example/
 [buildbadge_github]: https://github.com/cmakelib/cmakelib-component-storage/workflows/Tests/badge.svg
-
