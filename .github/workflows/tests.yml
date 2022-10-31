@@ -13,11 +13,11 @@ jobs:
   test_linux:
     strategy:
       matrix:
-        image: ["latest-debian-buster", "latest-ubuntu-1804", "latest-ubuntu-2004"]
+        image: ["latest-debian-buster", "latest-debian-bullseye", "latest-ubuntu-2004", "latest-ubuntu-2204" ]
         cmdopt: [ "-P ./CMakeLists.txt", "." ]
     runs-on: ubuntu-latest
     container:
-        image: cmakelib/build-linux:${{ matrix.image }}
+        image: koudis/cmakelib-build-linux:${{ matrix.image }}
     steps:
       - uses: actions/checkout@v2
       - name: Init CMakelib

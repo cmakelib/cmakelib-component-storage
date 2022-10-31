@@ -151,14 +151,16 @@ ENDFUNCTION()
 MACRO(_CMLIB_STORAGE_INIT)
 	_CMLIB_STORAGE_LOAD_REMOTES(storage_uri_list)
 	WHILE(storage_uri_list)
-		LIST(POP_FRONT storage_uri_list storage_name storage_uri)
+		LIST(POP_FRONT storage_uri_list storage_name storage_uri storage_revision)
 		_CMLIB_LIBRARY_DEBUG_MESSAGE("Storage name: ${storage_name}")
 		_CMLIB_LIBRARY_DEBUG_MESSAGE("Storage uri: ${storage_uri}")
+		_CMLIB_LIBRARY_DEBUG_MESSAGE("Storage revision: ${storage_revision}")
 		CMLIB_DEPENDENCY(
 			KEYWORDS CMLIB STORAGE ${storage_name}
 			TYPE DIRECTORY
 			URI "${storage_uri}"
 			URI_TYPE GIT
+			GIT_REVISION "${storage_revision}"
 			OUTPUT_PATH_VAR storage_path
 		)	
 		SET(module_entry "${storage_path}/STORAGE.cmake")
@@ -187,8 +189,8 @@ ENDMACRO()
 #
 # <output_var_list> represents list in form
 #   [
-#	  <storage_uppercase_name_1>, <uri_1>,
-#	  <storage_uppercase_name_2>, <uri_2>,
+#	  <storage_uppercase_name_1>, <uri_1>, <revision_1>
+#	  <storage_uppercase_name_2>, <uri_2>, <revision_2>
 #     ...
 #   ]
 #
@@ -215,11 +217,18 @@ FUNCTION(_CMLIB_STORAGE_LOAD_REMOTES output_var_list)
 	SET(storage_uri_list)
 	FOREACH(storage_name IN LISTS STORAGE_LIST)
 		STRING(TOUPPER "${storage_name}" storage_name_upper)
-		SET(entry_var STORAGE_LIST_${storage_name_upper})
+		SET(entry_var          STORAGE_LIST_${storage_name_upper})
+		SET(entry_var_revision STORAGE_LIST_${storage_name_upper}_REVISION)
 		IF(NOT DEFINED ${entry_var})
 			MESSAGE(FATAL_ERROR "Storage list entry '${entry_var}' for '${storage_name}' is not defined")
 		ENDIF()
-		LIST(APPEND storage_uri_list ${storage_name_upper} ${${entry_var}})
+		SET(default_revision)
+		IF(NOT DEFINED ${entry_var_revision})
+			SET(default_revision ${CMLIB_FILE_DOWNLOAD_DEFAULT_REVISION})
+		ELSE()
+			SET(default_revision ${${entry_var_revision}})
+		ENDIF()
+		LIST(APPEND storage_uri_list ${storage_name_upper} ${${entry_var}} ${default_revision})
 	ENDFOREACH()
 	SET(${output_var_list} ${storage_uri_list} PARENT_SCOPE)
 ENDFUNCTION()
