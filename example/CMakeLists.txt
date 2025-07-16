@@ -4,7 +4,7 @@ PROJECT(CMLIB_ENV_TEST)
 #
 # For CMLIB installation guide look att cmakelib repository readme
 #
-FIND_PACKAGE(CMLIB COMPONENTS STORAGE)
+FIND_PACKAGE(CMLIB COMPONENTS STORAGE CMUTIL)
 
 IF(MY_STORAGE_VARIABLE STREQUAL "StorageVariable")
 	MESSAGE(STATUS "---> STORAGE sucessfully inicialized! Yup!")
