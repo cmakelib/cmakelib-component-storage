@@ -21,31 +21,23 @@ Each dependency is downloaded and the `STORAGE.cmake` in the remote git reposito
 
 ## Usage
 
-Requirements:
+CMUTIL is intended to be used thru [CMLIB].
 
-- [CMLIB] installed and works
+CMUTIL is not supposed to be used separately.
 
-then just call
-
-```
-FIND_PACKAGE(CMLIB COMPONENTS STORAGE)
-```
-
-it will initialize `CMLIB_STORAGE` and all shared storages registred in `CMLibStorage.cmake`.
-
-Look at example at [example/] directory.
+To use the component install [CMLIB] and call `FIND_PACKAGE(CMLIB COMPONENTS CMUTIL)`.
 
 ## General
 
-[CMake-lib] storage tracks and maintain remote git repositories in a simple way.
+[CMake-lib] storage tracks and maintains remote git repositories in a simple way.
 
-It's intended for two main use-cases
+The component is intended for two main use-cases:
 
-- we want to store all URI in one place. We create repository and in the STORAGE.cmake
-  we store all remote URIs which the project needs
-- we have some CMake macros/modules, build scripts/resources etc which are all common for all
-  components of our project. We just create  git repository and upload all shared dependencies
-  into it.
+- to store all URIs in one place. The repository is created and in the STORAGE.cmake
+  all remote URIs which the project needs are stored
+- when CMake macros/modules, build scripts/resources etc are common for all
+  components of a project. A git repository is created and all shared dependencies
+  are uploaded into it.
 
 ### Remote GIT repository structure
 
@@ -75,14 +67,14 @@ Look at example at [example/CMLibStorage.cmake]
 
 ### Variable templates
 
-The Storage implements mechanism called "Variable template".
+The Storage implements a mechanism called "Variable template".
 
-Let's imagine that we have a URI for Boost. We want to write an app for Windows, Mac and Linux. \
-let "https://mystorage.com/boost_107400_windows_amd64.zip" be a URI for Boost 1.74.0 for 64-bit windows.
+Consider a scenario with a URI for Boost. An application needs to be written for Windows, Mac and Linux. \
+Let "https://mystorage.com/boost_107400_windows_amd64.zip" be a URI for Boost 1.74.0 for 64-bit windows.
 
-We define variable in form `SET(BOOST_URI_TEMPLATE "https://mystorage.com/boost_<version>_<OS>_<PlAtFoRm>.zip")`
+The variable is defined in the form `SET(BOOST_URI_TEMPLATE "https://mystorage.com/boost_<version>_<OS>_<PlAtFoRm>.zip")`
 
-Once we want to obtain URL for Boost 1.74.0 for 64-bit windows by template variable BOOST_URI_TEMPLATE we just call
+To obtain the URL for Boost 1.74.0 for 64-bit windows using the template variable BOOST_URI_TEMPLATE, the following call is made:
 
 ```cmake
 SET(BOOST_URI_TEMPLATE "https://mystorage.com/boost_<version>_<OS>_<PlAtFoRm>.zip")
@@ -100,9 +92,9 @@ It prints "https://mystorage.com/boost_107400_windows_amd64.zip".
 
 ## Bug reports and feature requests
 
-If you want to submit a Bug report/feature request create a [Github Issue].
+Bug reports and feature requests can be submitted by creating a [Github Issue].
 
-If you have a question please use [Github Discussion]
+Questions should be posted using [Github Discussion]
 
 [CMLIB]:             https://github.com/cmakelib
 [CMake-lib]:         https://github.com/cmakelib
